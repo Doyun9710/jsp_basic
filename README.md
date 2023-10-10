@@ -4,8 +4,8 @@
 
 &#160;
 < WebEx01 >
-ex01 : import Date
-ex02 : 월 지정 달력
+- ex01 : import Date
+- ex02 : 월 지정 달력
 calendar01 : 현재 달력
 calendar02 : calendar01 + 문법 개선
 
