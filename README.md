@@ -2,31 +2,31 @@
 
 
 
-&#160;
-< WebEx01 >
+## < WebEx01 >
 - ex01 : import Date
 - ex02 : 월 지정 달력
-calendar01 : 현재 달력
-calendar02 : calendar01 + 문법 개선
+- calendar01 : 현재 달력
+- calendar02 : calendar01 + 문법 개선
 
-ex03 : 메서드 선언, <%!
+- ex03 : 메서드 선언, <%!
 
-Ex3_13 : 73p, 예제 3.13 request 기본 객체의 클라이언트 및 서버 정보 관련 메서드
+- Ex3_13 : 73p, 예제 3.13 request 기본 객체의 클라이언트 및 서버 정보 관련 메서드
 
-form, form_ok : GET, POST, 데이터 전송, POST 다국어 처리
+- form, form_ok : GET, POST, 데이터 전송, POST 다국어 처리
 
-gugudan1, gugudan1_ok : POST, 구구단 출력
+- gugudan1, gugudan1_ok : POST, 구구단 출력
 
-Ex3_14, Ex3_15 : 76p~78p, 예제 3.14, 3.15 request 기본 객체의 요청 파라미터 관련 메서드
+- Ex3_14, Ex3_15 : 76p~78p, 예제 3.14, 3.15 request 기본 객체의 요청 파라미터 관련 메서드
 
-calendar03, calendar03_ok : 년도, 월 입력 -> 달력 테이블
-calendar, calendar_ok : 년도, 월 <select> -> 달력 테이블
+- calendar03, calendar03_ok : 년도, 월 입력 -> 달력 테이블
+- calendar, calendar_ok : 년도, 월 <select> -> 달력 테이블
 
-gugudan2 : gugudan1 + gugudan1_ok
-calendar04 : calendar03 + calendar03_ok
+- gugudan2 : gugudan1 + gugudan1_ok
+- calendar04 : calendar03 + calendar03_ok
 
-&#160;
-< WebEx02 >
+
+
+### < WebEx02 >
 ex01 : Hello JSP
 /dir1/ex01 : Hello JSP
 
