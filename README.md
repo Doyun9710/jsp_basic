@@ -1,4 +1,5 @@
-# ReadMe
+
+
 
 < WebEx01 >
 ex01 : import Date
@@ -17,10 +18,11 @@ gugudan1, gugudan1_ok : POST, 구구단 출력
 Ex3_14, Ex3_15 : 76p~78p, 예제 3.14, 3.15 request 기본 객체의 요청 파라미터 관련 메서드
 
 calendar03, calendar03_ok : 년도, 월 입력 -> 달력 테이블
-calendar, calendar_ok : 년도, 월 <select> -> 달력 테이블
+calendar, calendar_ok : 년도, 월 < select> -> 달력 테이블
 
 gugudan2 : gugudan1 + gugudan1_ok
 calendar04 : calendar03 + calendar03_ok
+
 
 < JDBCEx01 >
 jdbc01 : dept table 출력
@@ -32,6 +34,7 @@ dept_insert : 입력항목
 dept_insert_ok : 데이터베이스 입력
 dept_delete_ok : 데이터베이스 삭제
 
+
 < JDBCEx02 >
 커넥션 풀
 C:\Java\jsp-workspace\JDBCEx01\src\main\webapp\META-INF\context.xml
@@ -39,21 +42,25 @@ C:\Java\jsp-workspace\JDBCEx01\src\main\webapp\META-INF\context.xml
 jdbc01 : DB 연결
 jdbc02 : 데이터 출력
 
+
 < JDBCEx03 >
 zipcode01 : select * from zipcode where dong like ?
 zipcode02 : zipcode01
+
 
 < BoardEx01 >
 (mariadb/simple1)
 board_write1, board_write1_ok : POST 데이터 확인 -> insert subject, writer, mail, password, content, wip
 board_list1 : select datediff
 board_view1 : select ~ where seq=?, 조회수 증가
-board_modify1, board_modify1_ok :
+board_modify1, board_modify1_ok : 
 board_delete1, board_delete1_ok : input type="hidden"
+
 
 (mariadb/emoticon1)
 board_modify1 : 깔끔
 board_modify2 : 삼항연산자 이용 이모티콘 체크(노가다)
+
 
 (mariadb/simple2)
 board_insert1_ok : 데이터 100개 생성/입력
@@ -71,28 +78,32 @@ view
 modify modify_ok
 delete delete_ok
 
+
 (mariadb/reply1)
 board_reply1 : (new) 답글쓰기
-board_reply1_ok : SELECT grp, grps, grpl -> UPDATE grps -> INSERT
+board_reply1_ok : SELECT grp, grps, grpl -> UPDATE grps -> INSERT 
+
 
 < UploadEx01 >
 upload : 파일 전송 <form>
 upload_ok : 파일 전송
 
+
 < BoardEx01 >
 (mariadb/pds1)
 board_write1 : enctype="multipart/form-data"
 board_write1_ok : request -> multi
-board_modify1_ok :
-새로운 파일이 있는 경우
-update pds_board1 set subject=?, mail=?, content=?, filename=?, filesize=? where seq=? and password=?
-기존 파일이 있는 경우
-기존 파일 삭제
-기존 파일이 없는 경우 X
-새로운 파일이 없는 경우
-update pds_board1 set subject=?, mail=?, content=? where seq=? and password=?
-기존 파일이 있는 경우 X
-기존 파일이 없는 경우 X
+board_modify1_ok : 
+	새로운 파일이 있는 경우
+		update pds_board1 set subject=?, mail=?, content=?, filename=?, filesize=? where seq=? and password=?
+		기존 파일이 있는 경우
+			기존 파일 삭제
+		기존 파일이 없는 경우 X
+	새로운 파일이 없는 경우
+		update pds_board1 set subject=?, mail=?, content=? where seq=? and password=?
+		기존 파일이 있는 경우 X
+		기존 파일이 없는 경우 X
+
 
 (mariadb/album1)
 CRUD
@@ -103,6 +114,7 @@ CRUD
 (mariadb/album3)
 no image
 
+
 < WebEx02 >
 out01 : buffer, autoFlush
 out02 : out method
@@ -110,22 +122,25 @@ response01 : 페이지 이동 jsp 방식, javascript 방식
 pageContext01 : JspWriter, out = writer
 ex5_3 : JSP 120p 예제 5.3 기본 객체 접근 메서드
 
+
 < WebEx03 >
 application01 : application.getInitParameter
 application02 : application.getInitParameter
 ex5_5 : JSP 123p 예제 5.5 초기화 파라미터 읽어오기
-main, sub : jsp:include
+main, sub : <jsp:include>
 
 main02, header, footer : header, footer 외부파일 연동
 
 main03, sub03.jspf : include 디렉티브, jspf 파일은 에러 무시, <%@ include file=".jspf" %>
 
-main04, sub04 : JSP 177p ~ 181p, jsp:forward
+main04, sub04 : JSP 177p ~ 181p, <jsp:forward>
+
 
 (forward)
 a, b, c : out.println( a, b, c )
 forward : <form>a, b, c
 forward_ok : RequestDispatcher
+
 
 < WebEx04 >
 ../Java Resources/src/main/java/pack1/MemberTO : id, password getter/setter
@@ -142,8 +157,36 @@ Zipcode, Zipcode_ok : search dong -> table
 ZipcodeDAO : searchZipcode()
 ZipcodeTO : zipcode, sido, gugun, dong, ri, bunji
 
+
+
 < BoardModel1Ex01 >
+
 
 < EmotBoardModel1 >
 
+
 < PagingModelEx01 >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
