@@ -1,0 +1,325 @@
+
+
+
+게시판 BBS - Communication / Community
+	웹 CRUD(DML)
+	목록형 - 회원목록, 상품목록, ...
+
+1. ERD
+2. 페이지 네비게이션
+	페이지간의 흐름 : 화면전환
+	글목록 : board_list1.jsp
+	글쓰기 : board_write1.jsp
+	글상세 : board_view1.jsp
+	글수정 : board_modify1.jsp
+	글삭제 : board_delete1.jsp
+	
+	DFD - Data Flow Diagram
+	board_list1.jsp
+	()->	board_write1.jsp	(입력내용)->	board_write1_ok.jsp(DB)		()->	board_list1.jsp
+	(pk : seq)->	board_view1.jsp
+		(seq)->	board_modify1.jsp	(seq, 비밀번호 / 입력내용)->	board_modify1_ok.jsp(DB)	(seq)->		board_view1.jsp
+		(seq)->	board_delete1.jsp	(seq, 비밀번호)->	board_delete1_ok.jsp(DB)	()->	board_list1.jsp
+
+개발 순서
+board_write1.jsp	board_write_ok.jsp
+board_list1.jsp(1차)
+board_view1.jsp
+	board_modify1.jsp	board_modify1_ok.jsp
+	board_delete1.jsp	board_delete1_ok.jsp
+board_list1.jsp(2차)
+
+
+디자인 시안
+- HTML
+
+
+
+데이터베이스 구성
+데이터베이스명 : board
+사용자명 : board
+비밀번호 : 123456
+create database board;
+create user board@localhost identified by '123456';
+grant all privileges on board.* to 'board'@'localhost';
+
+테이블 구성
+Table 명 : board1
+<논리적>			<물리적>		<자료형>			<Null>		<Key>
+글번호			seq			int				not null	Primary Key auto_increment
+제목				subject		varchar(150)	not null
+글쓴이			writer		varchar(12)		not null
+이메일			mail		varchar(50)
+비밀번호			password	varchar(12)		not null
+내용				content		varchar(2000)
+조회수			hit			int				not null
+아이피			wip			varchar(15)		not null
+등록일			wdate		datetime		not null
+
+
+create table board1 (
+seq			 int				 not null primary key auto_increment,
+subject		 varchar(150)		 not null,
+writer		 varchar(12)		 not null,
+mail		 varchar(50),
+password	 varchar(12)		 not null,
+content		 varchar(2000),
+hit			 int				 not null,
+wip			 varchar(15)		 not null,
+wdate		 datetime			 not null
+);
+
+INSERT
+insert into board1 values ( 0, '제목', '이름', 'test@test.com', '1234', '내용', 0, '000.000.000.000', now() );
+
+
+create table emot_board1 (
+seq			 int				 not null primary key auto_increment,
+subject		 varchar(150)		 not null,
+writer		 varchar(12)		 not null,
+mail		 varchar(50),
+password	 varchar(12)		 not null,
+content		 varchar(2000),
+emot		 char(2)		 not null,
+hit			 int				 not null,
+wip			 varchar(15)		 not null,
+wdate		 datetime			 not null
+);
+
+INSERT
+insert into emot_board1 values ( 0, '제목', '이름', 'test@test.com', '1234', '내용', '01', 0, '000.000.000.000', now() );
+
+UPDATE
+update emot_board1 set subject='11', mail='55@66', content='44', emot='01' where seq='3' and password='33';
+
+
+프로그램 개발 순서
+1. 데이터베이스 구성
+2. board_write1.jsp	board_write_ok.jsp
+3. board_list1.jsp(1차) - list 가시화
+4. board_view1.jsp
+5-1. 	board_modify1.jsp	board_modify1_ok.jsp
+5-2. 	board_delete1.jsp	board_delete1_ok.jsp
+6. board_list1.jsp(2차) - 'new' 조건 설정
+
+
+페이지넘버
+페이지번호		데이터개수			레코드 시작위치
+cpage		recordPerPage	skip
+1			10				0
+2			10				10
+3			10				20
+...
+skip = (cpage - 1) * recordPerPage
+
+마지막 페이지
+전체 레코드		데이터개수			전체 페이지수
+totalRecord	recordPerPage	totalPage
+0			10				1
+1			10				1
+2			10				1
+...
+9			10				1
+10			10				1
+11			10				2
+12			10				2
+...
+totalPage = ((totalRecord - 1) / recordPerPage) + 1
+
+
+보여질 페이지 목록		보여질 페이지 갯수		시작 블럭 위치
+cpage				blockPerPage		startBlock		endBlock
+1					5					1				5
+2					5					1				5
+...
+5					5					1				5
+6					5					6				10
+...
+startBlock = cpage - (cpage-1) % blockPerPage
+endBlock = cpage - (cpage-1) % blockPerPage + blockPerPage - 1
+
+
+
+대댓글
+답변글 - reply
+	모글 -> 답글을 추가
+	리스트
+댓글 - 코멘트
+	뷰
+참고(다른 알고리즘)
+https://zi2eon.tistory.com/20
+
+
+board_list1.jsp	-> board_write1.jsp	-> board_write_ok.jsp
+board_view1.jsp
+	board_modify1.jsp	-> board_modify1_ok.jsp
+	board_delete1.jsp	-> board_delete1_ok.jsp
+	board_reply1.jsp	-> board_reply1_ok.jsp(답글)
+	
+모글 - board_write1.jsp
+글번호		seq		자동증가
+글그룹		grp		seq(last_insert_id() 이용)
+그룹내 순서		grps	0
+그룹내 위치		grpl	0
+
+답글 - board_reply1.jsp
+글번호		seq		자동증가
+글그룹		grp		모글/부모글 grp
+그룹내 순서		grps	부모글과 같은 grp 번호에서
+					1) 부모글 grps 보다 큰 grps 번호 + 1
+					2) 자신은 부모글 grps + 1
+그룹내 위치		grpl	부모글 grpl + 1
+
+
+		seq		grp		grps	grpl
+모글1		1		1		0		0		write
+모글2		2		2		0		0		write
+1-1		3		1		1		1		reply
+
+모글1		1		1		0		0		write
+모글2		2		2		0		0		write
+1-1		3		1		2		1		reply
+1-2		4		1		1		1		reply
+
+모글1		1		1		0		0		write
+모글2		2		2		0		0		write
+1-1		3		1		3		1		reply
+1-2		4		1		2		1		reply
+1-3		5		1		1		1		reply
+1-1-1	6		1		4		2		reply
+
+모글1		1		1		0		0		write
+모글2		2		2		0		0		write
+1-1		3		1		3		1		reply
+1-2		4		1		2		1		reply
+1-3		5		1		1		1		reply
+1-1-1	6		1		5		2		reply
+1-1-2	7		1		4		2		reply
+
+모글1		1		1		0		0		write
+모글2		2		2		0		0		write
+1-1		3		1		4		1		reply
+1-2		4		1		2		1		reply
+1-3		5		1		1		1		reply
+1-1-1	6		1		6		2		reply
+1-1-2	7		1		5		2		reply
+1-2-1	8		1		3		2		reply
+
+=============================================
+정렬방법 : order by grp desc, grps asc
+모글2		2		2		0		0		write
+모글1		1		1		0		0		write
+ 1-3	5		1		1		1		reply
+ 1-2	4		1		2		1		reply
+  1-2-1	8		1		3		2		reply
+ 1-1	3		1		4		1		reply
+  1-1-2	7		1		5		2		reply
+  1-1-1	6		1		6		2		reply
+
+
+create table rep_board1 (
+seq			 int				 not null primary key auto_increment,
+grp			 int				 not null,
+grps		 int				 not null,
+grpl		 int				 not null,
+subject		 varchar(150)		 not null,
+writer		 varchar(12)		 not null,
+mail		 varchar(50),
+password	 varchar(12)		 not null,
+content		 varchar(2000),
+hit			 int				 not null,
+wip			 varchar(15)		 not null,
+wdate		 datetime			 not null
+);
+
+INSERT 1
+insert into rep_board1 values ( 0, 1, 0, 0, '제목', '이름', 'test@test.com', '1234', '내용', 0, '000.000.000.000', now() );
+
+SELECT
+select seq, grp, grps, grpl from rep_board1;
+
+last_insert_id() 이용 (가장 최근의 seq)
+select last_insert_id() from rep_board1;
+
+INSERT 2 - 모글 작성 sql
+insert into rep_board1 values ( 0, last_insert_id()+1, 0, 0, '제목', '이름', 'test@test.com', '1234', '내용', 0, '000.000.000.000', now() );
+
+
+
+파일 업로드
+create table pds_board1 (
+seq			 int				 not null primary key auto_increment,
+subject		 varchar(150)	 not null,
+writer		 varchar(12)		 not null,
+mail		 varchar(50),
+password	 varchar(12)		 not null,
+content		 varchar(2000),
+filename 	 varchar(50),
+filesize	 int,
+hit			 int				 not null,
+wip			 varchar(15)		 not null,
+wdate		 datetime		 not null
+);
+
+INSERT 1
+insert into pds_board1 values ( 0, '제목', '이름', 'test@test.com', '1234', '내용', 'test.txt', 10, 0, '000.000.000.000', now() );
+
+
+
+
+
+< AlbumEx01 >
+create table img_board1 (
+seq			 int				 not null primary key auto_increment,
+subject		 varchar(150)	 not null,
+writer		 varchar(12)		 not null,
+mail		 varchar(50),
+password	 varchar(12)		 not null,
+content		 varchar(2000),
+filename 	 varchar(50),
+filesize	 int,
+hit			 int				 not null,
+wip			 varchar(15)		 not null,
+wdate		 datetime		 not null
+);
+
+INSERT 1
+insert into img_board1 values ( 0, '제목', '이름', 'test@test.com', '1234', '내용', '607927_1.jpg', 10, 0, '000.000.000.000', now() );
+
+다음글 / 이전글
+select seq, subject from img_board1 where seq > ? order by seq asc limit 1;
+select seq, subject 
+from img_board1 
+where seq > 109 
+order by seq asc 
+limit 1;
+
+select seq, subject from img_board1 where seq < ? order by seq desc limit 1;
+select seq, subject 
+from img_board1 
+where seq < 109 
+order by seq desc 
+limit 1;
+
+
+
+
+
+< WebEx04 >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
