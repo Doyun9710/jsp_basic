@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis">
+
+	<!-- select deptno, dname, loc from dept where deptno = 10 -->
+	<select id="selectlist" resultType="com.exam.model1.DeptTO">
+		select deptno, dname, loc 
+		from dept 
+		where deptno = 10
+	</select>
+
+</mapper>
+
+
+
+
+

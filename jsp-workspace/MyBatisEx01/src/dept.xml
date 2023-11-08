@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis">
+	<select id="selectone" resultType="java.util.Map">
+		select deptno, dname, loc 
+		from dept 
+		where deptno = 10
+	</select>
+	
+	<select id="selecttoone" resultType="model1.DeptTO1">
+		select deptno, dname, loc 
+		from dept 
+		where deptno = 10
+	</select>
+	
+	<select id="selecttoone2" resultType="model1.DeptTO2">
+		select deptno, dname, loc 
+		from dept 
+		where deptno = 10
+	</select>
+	
+	<select id="selectlist" resultType="Map">
+		select deptno, dname, loc 
+		from dept 
+	</select>
+	
+	<select id="selectlistto2" resultType="model1.DeptTO2">
+		select deptno, dname, loc 
+		from dept 
+	</select>
+</mapper>

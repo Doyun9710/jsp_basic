@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis">
+
+	<!-- list -->
+	<select id="list" resultType="com.exam.model1.BoardTO">
+		select seq, subject, writer, filename, filesize, date_format(wdate, '%Y-%m-%d') wdate, hit, datediff(now(), wdate) wgap
+		from img_board1
+		order by seq desc
+	</select>
+	<select id="list_search" parameterType="com.exam.model1.BoardListTO" resultType="com.exam.model1.BoardTO">
+		select seq, subject, writer, filename, filesize, date_format(wdate, '%Y-%m-%d') wdate, hit, datediff(now(), wdate) wgap
+		from img_board1
+		
+		<choose>
+			<when test="searchKey == 'subject' and searchWord != '' ">
+				where subject like concat( '%', '제목', '%' )
+			</when>
+			<when test="searchKey == 'content' and searchWord != '' ">
+				where content like concat( '%', #{ searchWord }, '%' )
+			</when>
+			<when test="searchKey == 'writer' and searchWord != '' ">
+				where writer like concat( '%', #{ searchWord }, '%' )
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+
+		order by seq desc
+	</select>
+
+
+	<!-- view -->
+	<select id="view" parameterType="com.exam.model1.BoardTO" resultType="com.exam.model1.BoardTO">
+		select seq, subject, writer, mail, wip, wdate, hit, content, filename, filesize
+		from img_board1
+		where seq=#{ seq }
+	</select>
+
+	<update id="view_hit" parameterType="com.exam.model1.BoardTO">
+		update img_board1
+		set hit=hit+1
+		where seq=#{ seq }
+	</update>
+	
+	<select id="view_nextpage" parameterType="com.exam.model1.BoardTO" resultType="com.exam.model1.BoardTO">
+		select seq, subject 
+		from img_board1 
+		where seq > #{ seq }
+		order by seq asc limit 1
+	</select>
+	
+	<select id="view_lastpage" parameterType="com.exam.model1.BoardTO" resultType="com.exam.model1.BoardTO">
+		select seq, subject 
+		from img_board1 
+		where seq &lt; #{ seq }
+		order by seq desc limit 1
+	</select>
+
+
+	<!-- write_ok -->
+	<insert id="write_ok" parameterType="com.exam.model1.BoardTO">
+		insert into img_board1
+		values ( 0, #{ subject }, #{ writer }, #{ mail }, #{ password }, #{ content }, #{ filename }, #{ filesize }, 0, #{ wip }, now() )
+	</insert>
+
+
+	<!-- modify -->
+	<select id="modify" parameterType="com.exam.model1.BoardTO" resultType="com.exam.model1.BoardTO">
+		select seq, subject, writer, mail, content, filename 
+		from img_board1 
+		where seq=#{ seq }
+	</select>
+	
+	
+	<!-- modify_ok -->
+	<select id="modify_ok_select_filename" parameterType="com.exam.model1.BoardTO" resultType="String">
+		select filename 
+		from img_board1 
+		where seq=#{ seq }
+	</select>
+	
+	<update id="modify_ok" parameterType="com.exam.model1.BoardTO">
+		update img_board1 
+		set subject=#{ subject }, mail=#{ mail }, content=#{ content }, filename=#{ filename }, filesize=#{ filesize }
+		where seq=#{ seq } and password=#{ password }
+	</update >
+	
+	
+	<!-- delete -->
+	<select id="delete" parameterType="com.exam.model1.BoardTO" resultType="com.exam.model1.BoardTO">
+		select seq, subject, writer 
+		from img_board1 
+		where seq=#{ seq }
+	</select>
+	
+	
+	<!-- delete_ok -->
+	<delete id="delete_ok" parameterType="com.exam.model1.BoardTO">
+		delete from img_board1 
+		where seq=#{ seq } and password=#{ password }
+	</delete>
+	
+	<select id="delete_select_filename" parameterType="com.exam.model1.BoardTO" resultType="String">
+		select filename 
+		from img_board1 
+		where seq=#{ seq }
+	</select>
+
+</mapper>
+
+
+
+
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis">
+	<select id="selectlist" resultType="model1.ZipcodeTO">
+		select zipcode, sido, gugun, dong, ri, bunji
+		from zipcode
+		limit 0, 5
+	</select>
+	
+	<select id="selectparamlist1" parameterType="String" resultType="model1.ZipcodeTO">
+		select zipcode, sido, gugun, dong, ri, bunji
+		from zipcode
+		where dong = #{ dong }
+	</select>
+	
+	<select id="selectparamlist2" parameterType="model1.ZipcodeTO" resultType="model1.ZipcodeTO">
+		select zipcode, sido, gugun, dong, ri, bunji
+		from zipcode
+		where gugun=#{ gugun } and dong=#{ dong }
+	</select>
+	
+	<select id="selectparamlist3" parameterType="model1.ZipcodeTO" resultType="model1.ZipcodeTO">
+		select zipcode, sido, gugun, dong, ri, bunji
+		from zipcode
+		where dong like concat( #{ dong }, '%' )
+	</select>
+</mapper>
+
+
+
+
+

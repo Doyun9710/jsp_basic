@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis">
+
+	<update id="createTable1">
+		create table testtb1 (
+		col1 varchar(10),
+		col2 varchar(20)
+		)
+	</update>
+	
+	<update id="createTable2" parameterType="String">
+		${ value }
+	</update>
+	
+	<update id="dropTable1">
+		drop table if exists testtb1
+	</update>
+
+</mapper>
